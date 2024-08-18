@@ -49,6 +49,12 @@ const possibleDebtAccounts = {
         balance: 15000,
         interest: 0.0725,
         type: "liability"
+    },
+    "mortgage": {
+        display: "Mortgage",
+        balance: 125000,
+        interest: 0.07,
+        type: "liability"
     }
 };
 
