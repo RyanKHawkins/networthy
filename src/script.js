@@ -30,18 +30,24 @@ function getPaid() {
     return 1000;
 }
 
-function getOptionalAccounts() {}
+function generateDropdownOptions() {}
 const possibleDebtAccounts = {
     "college-loans": {
         display: "College Loans",
         balance: 5000,
-        interest: 0.05,
+        interest: 1,
         type: "liability"
     },
     "medical-bill": {
         display: "Medical Bill",
         balance: 5000,
-        interest: 0.05,
+        interest: 1,
+        type: "liability"
+    },
+    "car-loan": {
+        display: "Car Loan",
+        balance: 15000,
+        interest: 0.0725,
         type: "liability"
     }
 };
@@ -57,6 +63,7 @@ function calculateNetWorth() {
     }
     return balance;
 }
+
 function earnInterest(account) {
     console.log(accounts);
     return (
@@ -64,12 +71,14 @@ function earnInterest(account) {
         accounts[account].balance * accounts[account].interest
     );
 }
+
 function formatToCurrency(amount) {
     return amount.toLocaleString("en-US", {
         style: "currency",
         currency: "USD"
     });
 }
+
 function transformNameToCamel(name) {
     name = name.toLowerCase().split("-");
     name = name
@@ -82,7 +91,8 @@ function transformNameToCamel(name) {
         .join("");
     return name;
 }
-function displayStats() {
+
+function displayBalances() {
     netWorthSpan.innerText = formatToCurrency(netWorthBalance);
     accountDisplay.innerHTML = "";
     for (let account in accounts) {
@@ -113,7 +123,7 @@ function tick() {
     console.log(`${time} - ticked`);
     accounts["basic-savings"].balance += getPaid();
     netWorthBalance = calculateNetWorth();
-    displayStats();
+    displayBalances();
     tickCount++;
 }
 
@@ -138,7 +148,7 @@ function transferMoney(fromAccount, toAccount, transferAmount) {
 }
 
 netWorthBalance = calculateNetWorth();
-displayStats();
+displayBalances();
 
 // setTimeout(() => {
 //     setInterval(tick, TICK_INTERVAL);
