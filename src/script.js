@@ -30,6 +30,11 @@ function getPaid() {
     return 1000;
 }
 
+function getRandomRange(min, max) {
+    let number = Math.floor(Math.random() * (max - min + 1) + min);
+    return number
+}
+
 function generateDropdownOptions() {}
 const possibleDebtAccounts = {
     "college-loans": {
@@ -54,6 +59,12 @@ const possibleDebtAccounts = {
         display: "Mortgage",
         balance: 125000,
         interest: 0.07,
+        type: "liability"
+    },
+    "credit-card": {
+        display: "Credit Card",
+        balance: 2500,
+        interest: 0.25,
         type: "liability"
     }
 };
