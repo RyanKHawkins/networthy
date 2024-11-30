@@ -5,7 +5,7 @@ const transferButton = document.querySelector("#transfer-button");
 
 // transferButton.addEventListener("click", transferMoney);
 
-const accounts = {
+const personalAccounts = {
     "basic-savings": {
         display: "Savings",
         balance: 100,
@@ -71,7 +71,7 @@ const possibleDebtAccounts = {
 
 function calculateNetWorth() {
     let balance = 0;
-    for (let [key, value] of Object.entries(accounts)) {
+    for (let [key, value] of Object.entries(personalAccounts)) {
         if (value.type == "asset") {
             balance += value.balance;
         } else {
@@ -82,10 +82,10 @@ function calculateNetWorth() {
 }
 
 function earnInterest(account) {
-    console.log(accounts);
+    console.log(personalAccounts);
     return (
-        accounts[account].balance +
-        accounts[account].balance * accounts[account].interest
+        personalAccounts[account].balance +
+        personalAccounts[account].balance * personalAccounts[account].interest
     );
 }
 
@@ -112,14 +112,14 @@ function transformNameToCamel(name) {
 function displayBalances() {
     netWorthSpan.innerText = formatToCurrency(netWorthBalance);
     accountDisplay.innerHTML = "";
-    for (let account in accounts) {
-        console.log("account: ", accounts[account]);
+    for (let account in personalAccounts) {
+        console.log("account: ", personalAccounts[account]);
         let div = document.createElement("div");
         div.id = account;
-        div.innerText = accounts[account].display + ": ";
+        div.innerText = personalAccounts[account].display + ": ";
 
         let span = document.createElement("span");
-        span.innerText = formatToCurrency(accounts[account].balance);
+        span.innerText = formatToCurrency(personalAccounts[account].balance);
         div.append(span);
 
         accountDisplay.append(div);
@@ -129,16 +129,16 @@ function displayBalances() {
 let tickCount = 0;
 function tick() {
     let accountsArray = [];
-    for (let key of Object.keys(accounts)) {
+    for (let key of Object.keys(personalAccounts)) {
         accountsArray.push(key);
     }
     accountsArray.forEach((a) => {
-        accounts[a].balance = earnInterest(a);
+        personalAccounts[a].balance = earnInterest(a);
     });
     let date = new Date();
     let time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     console.log(`${time} - ticked`);
-    accounts["basic-savings"].balance += getPaid();
+    personalAccounts["basic-savings"].balance += getPaid();
     netWorthBalance = calculateNetWorth();
     displayBalances();
     tickCount++;
@@ -146,21 +146,21 @@ function tick() {
 
 function transferMoney(fromAccount, toAccount, transferAmount) {
     if (!fromAccount || !toAccount) {
-        console.log("one or more of the accounts do not exist");
+        console.log("one or more of the personalAccounts do not exist");
         return;
     }
-    if (accounts[fromAccount].type == "liability") {
+    if (personalAccounts[fromAccount].type == "liability") {
         console.log("cannot transfer away from debt!");
         return;
     }
-    if (accounts[fromAccount].balance <= transferAmount) {
+    if (personalAccounts[fromAccount].balance <= transferAmount) {
         return;
     }
-    accounts[fromAccount].balance -= transferAmount;
-    if (accounts[toAccount].type == "liability") {
-        accounts[toAccount].balance -= transferAmount;
+    personalAccounts[fromAccount].balance -= transferAmount;
+    if (personalAccounts[toAccount].type == "liability") {
+        personalAccounts[toAccount].balance -= transferAmount;
     } else {
-        accounts[toAccount].balance += transferAmount;
+        personalAccounts[toAccount].balance += transferAmount;
     }
 }
 
