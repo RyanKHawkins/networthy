@@ -161,14 +161,17 @@ function transferMoney(fromAccount, toAccount, transferAmount) {
     //     return;
     // }
     if (!isValidTransfer(fromAccount, toAccount, transferAmount)) {
+        console.log("not a valid transfer");
         return
     }
     personalAccounts[fromAccount].balance -= transferAmount;
     if (personalAccounts[toAccount].type == "liability") {
         personalAccounts[toAccount].balance -= transferAmount;
+        console.log("paying off debt")
     } else {
         personalAccounts[toAccount].balance += transferAmount;
     }
+    displayBalances();
 }
 
 netWorthBalance = calculateNetWorth();
