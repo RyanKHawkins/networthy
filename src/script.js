@@ -72,11 +72,7 @@ const possibleDebtAccounts = {
 function calculateNetWorth() {
     let balance = 0;
     for (let [key, value] of Object.entries(personalAccounts)) {
-        if (value.type == "asset") {
-            balance += value.balance;
-        } else {
-            balance -= value.balance;
-        }
+        balance += value.type == "asset" ? value.balance : -value.balance;
     }
     return balance;
 }
