@@ -140,17 +140,28 @@ function tick() {
     tickCount++;
 }
 
+function isValidTransfer(fromAccount, toAccount, transferAmount) {
+    return (
+        personalAccounts[fromAccount] && personalAccounts[toAccount]
+        && personalAccounts[fromAccount].type == "asset"
+        && personalAccounts[fromAccount].balance >= transferAmount
+    )
+}
+
 function transferMoney(fromAccount, toAccount, transferAmount) {
-    if (!fromAccount || !toAccount) {
-        console.log("one or more of the personalAccounts do not exist");
-        return;
-    }
-    if (personalAccounts[fromAccount].type == "liability") {
-        console.log("cannot transfer away from debt!");
-        return;
-    }
-    if (personalAccounts[fromAccount].balance <= transferAmount) {
-        return;
+    // if (!fromAccount || !toAccount) {
+    //     console.log("one or more of the personalAccounts do not exist");
+    //     return;
+    // }
+    // if (personalAccounts[fromAccount].type == "liability") {
+    //     console.log("cannot transfer away from debt!");
+    //     return;
+    // }
+    // if (personalAccounts[fromAccount].balance <= transferAmount) {
+    //     return;
+    // }
+    if (!isValidTransfer(fromAccount, toAccount, transferAmount)) {
+        return
     }
     personalAccounts[fromAccount].balance -= transferAmount;
     if (personalAccounts[toAccount].type == "liability") {
