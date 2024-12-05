@@ -4,8 +4,17 @@ const netWorthSpan = document.querySelector("#networth-balance");
 const accountDisplay = document.querySelector("#account-display");
 const TICK_INTERVAL = 1000;
 const transferButton = document.querySelector("#transfer-button");
+const fromSelector = document.querySelector("#from-selector");
+const toSelector = document.querySelector("#to-selector");
+const fromOptions = document.querySelectorAll(".fromOptions")
 
-// transferButton.addEventListener("click", transferMoney);
+
+transferButton.addEventListener("click", transferMoney);
+fromSelector.addEventListener("change", () => {
+    console.log(fromSelector)
+    // console.log(`fromSelector value:  ${Object.entries(fromSelector.value)} ${fromSelector.value}`)
+    console.log(toSelector);
+})
 
 const personalAccounts = {
     "basic-savings": {
@@ -37,7 +46,28 @@ function getRandomRange(min, max) {
     return number
 }
 
-function generateDropdownOptions() {}
+function displayDropdown(option) {
+    return `${option.display}:  ${Helper.formatToCurrency(option.balance)}`
+}
+
+function generateDropdownOptions() {
+    for (let account in personalAccounts) {
+        // from selector
+        if (personalAccounts[account].type == "asset" && personalAccounts[account].balance > 0) {
+            let option = document.createElement("option");
+            option.textContent = displayDropdown(personalAccounts[account]);
+            option.className = "fromOptions";
+            option.classList.add("options")
+            option.value = personalAccounts[account];
+            fromSelector.appendChild(option);
+        }
+        // to selector
+        if (fromSelector.value != personalAccounts[account]) {
+            
+        }
+    }
+}
+
 const possibleDebtAccounts = {
     "college-loans": {
         display: "College Loans",
@@ -80,7 +110,6 @@ function calculateNetWorth() {
 }
 
 function earnInterest(account) {
-    console.log(personalAccounts);
     return (
         personalAccounts[account].balance +
         personalAccounts[account].balance * personalAccounts[account].interest
@@ -162,3 +191,4 @@ displayBalances();
 // setTimeout(() => {
 //     setInterval(tick, TICK_INTERVAL);
 // }, 5000);
+generateDropdownOptions()
