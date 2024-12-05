@@ -1,3 +1,5 @@
+import * as Helper from "./helper.js"
+
 const netWorthSpan = document.querySelector("#networth-balance");
 const accountDisplay = document.querySelector("#account-display");
 const TICK_INTERVAL = 1000;
@@ -85,28 +87,8 @@ function earnInterest(account) {
     );
 }
 
-function formatToCurrency(amount) {
-    return amount.toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD"
-    });
-}
-
-function transformNameToCamel(name) {
-    name = name.toLowerCase().split("-");
-    name = name
-        .map((e, i) => {
-            if (i == 0) {
-                return e;
-            }
-            return e[0].toUpperCase() + e.slice(1);
-        })
-        .join("");
-    return name;
-}
-
 function displayBalances() {
-    netWorthSpan.innerText = formatToCurrency(netWorthBalance);
+    netWorthSpan.innerText = Helper.formatToCurrency(netWorthBalance);
     accountDisplay.innerHTML = "";
     for (let account in personalAccounts) {
         console.log("account: ", personalAccounts[account]);
@@ -115,7 +97,7 @@ function displayBalances() {
         div.innerText = personalAccounts[account].display + ": ";
 
         let span = document.createElement("span");
-        span.innerText = formatToCurrency(personalAccounts[account].balance);
+        span.innerText = Helper.formatToCurrency(personalAccounts[account].balance);
         div.append(span);
 
         accountDisplay.append(div);
@@ -174,7 +156,7 @@ function transferMoney(fromAccount, toAccount, transferAmount) {
     displayBalances();
 }
 
-netWorthBalance = calculateNetWorth();
+let netWorthBalance = calculateNetWorth();
 displayBalances();
 
 // setTimeout(() => {

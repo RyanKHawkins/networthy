@@ -1,12 +1,29 @@
-
-
-function convertPercentageToDecimal(percent) {
+export function convertPercentageToDecimal(percent) {
     return percent / 100
 };
 
-function convertDecimalToPercentage (decimal) {
+export function convertDecimalToPercentage (decimal) {
     return decimal * 100
 };
 
+export function formatToCurrency(amount) {
+    return amount.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD"
+    });
+}
 
-export {convertPercentageToDecimal, convertDecimalToPercentage};
+export function transformNameToCamel(name) {
+    name = name.toLowerCase().split("-");
+    name = name
+        .map((e, i) => {
+            if (i == 0) {
+                return e;
+            }
+            return e[0].toUpperCase() + e.slice(1);
+        })
+        .join("");
+    return name;
+}
+
+// export {convertPercentageToDecimal, convertDecimalToPercentage};
