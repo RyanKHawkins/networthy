@@ -1,4 +1,4 @@
-import * as Helper from "./Helper.js"
+import * as Helper from "./helper.js"
 
 const netWorthSpan = document.querySelector("#networth-balance");
 const accountDisplay = document.querySelector("#account-display");
