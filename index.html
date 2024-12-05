@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>NetWorthy</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,11 +11,11 @@
         <p>Net Worth: <span id="networth-balance">$0</span></p>
         <div id="account-display"></div>
         <div id="transfer-form">
-            <label for="from">From</label>
-            <select id="from"></select>
+            <label for="from-selector">From</label>
+            <select id="from-selector"></select>
     
-            <label for="to">To</label>
-            <select id="to"></select>
+            <label for="to-selector">To</label>
+            <select id="to-selector"></select>
     
             <label for="amount">Amount</label>
             <input id="amount" type="number">
@@ -24,6 +24,6 @@
         </div>
     </main>
     <script src="src/script.js" type="module"></script>
-    <script src="src/helper.js"></script>
+    <script src="src/helper.js" type="module"></script>
 </body>
 </html>
