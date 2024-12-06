@@ -12,13 +12,15 @@
         <div id="account-display"></div>
         <div id="transfer-form">
             <label for="from-selector">From</label>
-            <select id="from-selector"></select>
+            <select id="from-selector">
+                <!-- <option value="" disabled>Choose an account</option> -->
+            </select>
     
             <label for="to-selector">To</label>
             <select id="to-selector"></select>
     
             <label for="amount">Amount</label>
-            <input id="amount" type="number">
+            <input id="amount" type="number" value=0>
     
             <button id="transfer-button">Transfer</button>
         </div>
