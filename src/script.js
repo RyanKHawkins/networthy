@@ -10,7 +10,6 @@ let amountInput = document.querySelector("#amount");
 
 
 transferButton.addEventListener("click", transferMoney);
-toSelector.addEventListener("change", () => console.log(toSelector));
 
 const personalAccounts = {
     "Savings": {
@@ -33,7 +32,7 @@ const personalAccounts = {
     }
 };
 
-fromSelector.addEventListener("change", generateDropdownOptions(fromSelector));
+fromSelector.addEventListener("change", generateDropdownOptions(toSelector));
 toSelector.addEventListener("change", generateDropdownOptions(toSelector));
 
 function getPaid() {
@@ -59,6 +58,7 @@ function createOption(account) {
 
 function generateDropdownOptions(selector) {
     console.log("function activate - generateDropdownOptions")
+    console.log(selector)
     selector.innerHTML = ""
     for (let account in personalAccounts) {
         console.log(personalAccounts[account])
@@ -67,8 +67,6 @@ function generateDropdownOptions(selector) {
             fromSelector.appendChild(createOption(account));
         }
         // to selector
-        console.log(`from: ${fromSelector.value}`)
-        console.log(fromSelector.value == "Savings")
         if (selector == toSelector && personalAccounts[account].display != fromSelector.value) {
             toSelector.appendChild(createOption(account));
         }
