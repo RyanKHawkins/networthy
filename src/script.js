@@ -10,6 +10,11 @@ let amountInput = document.querySelector("#amount");
 
 
 transferButton.addEventListener("click", transferMoney);
+window.addEventListener("keyup", (e) => {
+    if (e.key == "Enter") {
+        transferMoney()
+    }
+})
 
 const personalAccounts = {
     "Savings": {
@@ -173,6 +178,7 @@ function transferMoney() {
     let transferAmount = Number(amountInput.value);
     if (!isValidTransfer(fromSelector.value, toSelector.value, transferAmount)) {
         console.log("not a valid transfer");
+        amountInput.value = 0
         return
     }
     personalAccounts[fromSelector.value].balance -= transferAmount;
