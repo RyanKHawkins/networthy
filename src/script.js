@@ -4,29 +4,37 @@ const netWorthSpan = document.querySelector("#networth-balance");
 const accountDisplay = document.querySelector("#account-display");
 const TICK_INTERVAL = 1000;
 const transferButton = document.querySelector("#transfer-button");
+const fromSelector = document.querySelector("#from-selector");
+const toSelector = document.querySelector("#to-selector");
+let amountInput = document.querySelector("#amount");
 
-// transferButton.addEventListener("click", transferMoney);
+
+transferButton.addEventListener("click", transferMoney);
+toSelector.addEventListener("change", () => console.log(toSelector));
 
 const personalAccounts = {
-    "basic-savings": {
+    "Savings": {
         display: "Savings",
         balance: 100,
         interest: 0.0012,
         type: "asset"
     },
-    "hy-savings": {
+    "High-Yield Savings": {
         display: "High-Yield Savings",
-        balance: 0,
+        balance: 5,
         interest: 0.041,
         type: "asset"
     },
-    "college-loans": {
+    "College Loans": {
         display: "College Loans",
         balance: 5000,
         interest: 0.05,
         type: "liability"
     }
 };
+
+fromSelector.addEventListener("change", generateDropdownOptions(fromSelector));
+toSelector.addEventListener("change", generateDropdownOptions(toSelector));
 
 function getPaid() {
     return 1000;
@@ -37,7 +45,39 @@ function getRandomRange(min, max) {
     return number
 }
 
-function generateDropdownOptions() {}
+function createOptionDisplay(option) {
+    return `${option.display}:  ${Helper.formatToCurrency(option.balance)}`
+}
+
+function createOption(account) {
+    let option = document.createElement("option");
+    option.label = createOptionDisplay(personalAccounts[account]);
+    option.classList.add("options");
+    option.value = personalAccounts[account].display;
+    return option
+}
+
+function generateDropdownOptions(selector) {
+    console.log("function activate - generateDropdownOptions")
+    selector.innerHTML = ""
+    for (let account in personalAccounts) {
+        console.log(personalAccounts[account])
+        // from selector
+        if (selector == fromSelector && personalAccounts[account].type == "asset" && personalAccounts[account].balance > 0) {
+            fromSelector.appendChild(createOption(account));
+        }
+        // to selector
+        console.log(`from: ${fromSelector.value}`)
+        console.log(fromSelector.value == "Savings")
+        if (selector == toSelector && personalAccounts[account].display != fromSelector.value) {
+            toSelector.appendChild(createOption(account));
+        }
+    }
+    console.log(fromSelector);
+    console.log(personalAccounts[fromSelector.value]);
+    console.log(toSelector);
+}
+
 const possibleDebtAccounts = {
     "college-loans": {
         display: "College Loans",
@@ -80,7 +120,6 @@ function calculateNetWorth() {
 }
 
 function earnInterest(account) {
-    console.log(personalAccounts);
     return (
         personalAccounts[account].balance +
         personalAccounts[account].balance * personalAccounts[account].interest
@@ -123,36 +162,29 @@ function tick() {
 }
 
 function isValidTransfer(fromAccount, toAccount, transferAmount) {
+    console.log(`transferAmount:  ${transferAmount}`)
     return (
         personalAccounts[fromAccount] && personalAccounts[toAccount]
         && personalAccounts[fromAccount].type == "asset"
         && personalAccounts[fromAccount].balance >= transferAmount
+        && fromAccount != toAccount && !Number.isNaN(transferAmount)
     )
 }
 
-function transferMoney(fromAccount, toAccount, transferAmount) {
-    // if (!fromAccount || !toAccount) {
-    //     console.log("one or more of the personalAccounts do not exist");
-    //     return;
-    // }
-    // if (personalAccounts[fromAccount].type == "liability") {
-    //     console.log("cannot transfer away from debt!");
-    //     return;
-    // }
-    // if (personalAccounts[fromAccount].balance <= transferAmount) {
-    //     return;
-    // }
-    if (!isValidTransfer(fromAccount, toAccount, transferAmount)) {
+function transferMoney() {
+    let transferAmount = Number(amountInput.value);
+    if (!isValidTransfer(fromSelector.value, toSelector.value, transferAmount)) {
         console.log("not a valid transfer");
         return
     }
-    personalAccounts[fromAccount].balance -= transferAmount;
-    if (personalAccounts[toAccount].type == "liability") {
-        personalAccounts[toAccount].balance -= transferAmount;
+    personalAccounts[fromSelector.value].balance -= transferAmount;
+    if (personalAccounts[toSelector.value].type == "liability") {
+        personalAccounts[toSelector.value].balance -= transferAmount;
         console.log("paying off debt")
     } else {
-        personalAccounts[toAccount].balance += transferAmount;
+        personalAccounts[toSelector.value].balance += transferAmount;
     }
+    amountInput.value = 0;
     displayBalances();
 }
 
@@ -162,3 +194,5 @@ displayBalances();
 // setTimeout(() => {
 //     setInterval(tick, TICK_INTERVAL);
 // }, 5000);
+generateDropdownOptions(fromSelector)
+generateDropdownOptions(toSelector)
