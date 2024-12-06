@@ -129,15 +129,15 @@ function displayBalances() {
     accountDisplay.innerHTML = "";
     for (let account in personalAccounts) {
         console.log("account: ", personalAccounts[account]);
-        let div = document.createElement("div");
-        div.id = account;
-        div.innerText = personalAccounts[account].display + ": ";
+        let p = document.createElement("p");
+        p.id = account;
+        p.innerText = personalAccounts[account].display + ": ";
 
         let span = document.createElement("span");
         span.innerText = Helper.formatToCurrency(personalAccounts[account].balance);
-        div.append(span);
+        p.append(span);
 
-        accountDisplay.append(div);
+        accountDisplay.append(p);
     }
 }
 
