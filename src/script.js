@@ -46,6 +46,10 @@ const personalAccounts = {
 fromSelector.addEventListener("change", generateDropdownOptions(toSelector));
 toSelector.addEventListener("change", generateDropdownOptions(toSelector));
 
+function isAsset(account) {
+    return personalAccounts[account].type == "asset";
+}
+
 function getPaid() {
     return 1000;
 }
@@ -128,7 +132,8 @@ const possibleDebtAccounts = {
 function calculateNetWorth() {
     let balance = 0;
     for (let [key, value] of Object.entries(personalAccounts)) {
-        balance += value.type == "asset" ? value.balance : -value.balance;
+        balance += isAsset(key) ? value.balance : -value.balance;
+        console.log({key, value})
     }
     return balance;
 }
@@ -180,7 +185,7 @@ function isValidTransfer(fromAccount, toAccount, transferAmount) {
     console.log(`transferAmount:  ${transferAmount}`)
     return (
         personalAccounts[fromAccount] && personalAccounts[toAccount]
-        && personalAccounts[fromAccount].type == "asset"
+        && isAsset(fromAccount)
         && personalAccounts[fromAccount].balance >= transferAmount
         && fromAccount != toAccount && !Number.isNaN(transferAmount)
     )
