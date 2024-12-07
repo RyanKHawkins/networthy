@@ -1,5 +1,7 @@
 import * as Helper from "./helper.js"
 
+const isTesting = true;
+
 const netWorthSpan = document.querySelector("#networth-balance");
 const accountDisplay = document.querySelector("#account-display");
 const TICK_INTERVAL = 1000;
@@ -63,7 +65,7 @@ function createOptionDisplay(option) {
     return `${option.display}:  ${Helper.formatToCurrency(option.balance)}`
 }
 
-function createOption(account) {
+function createOptionFromAccount(account) {
     let option = document.createElement("option");
     option.label = createOptionDisplay(personalAccounts[account]);
     option.classList.add("options");
@@ -72,23 +74,17 @@ function createOption(account) {
 }
 
 function generateDropdownOptions(selector) {
-    console.log("function activate - generateDropdownOptions")
-    console.log(selector)
     selector.innerHTML = ""
     for (let account in personalAccounts) {
-        console.log(personalAccounts[account])
         // from selector
         if (selector == fromSelector && personalAccounts[account].type == "asset" && personalAccounts[account].balance > 0) {
-            fromSelector.appendChild(createOption(account));
+            fromSelector.appendChild(createOptionFromAccount(account));
         }
         // to selector
         if (selector == toSelector && personalAccounts[account].display != fromSelector.value) {
-            toSelector.appendChild(createOption(account));
+            toSelector.appendChild(createOptionFromAccount(account));
         }
     }
-    console.log(fromSelector);
-    console.log(personalAccounts[fromSelector.value]);
-    console.log(toSelector);
 }
 
 function generateBothDropdownOptions() {
@@ -149,7 +145,6 @@ function displayBalances() {
     netWorthSpan.innerText = Helper.formatToCurrency(netWorthBalance);
     accountDisplay.innerHTML = "";
     for (let account in personalAccounts) {
-        console.log("account: ", personalAccounts[account]);
         let p = document.createElement("p");
         p.id = account;
         p.innerText = personalAccounts[account].display + ": ";
@@ -173,16 +168,15 @@ function tick() {
     });
     let date = new Date();
     let time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-    console.log(`${time} - ticked`);
+    console.log(`${time} - ticked ${tickCount++}`);
     personalAccounts["Savings"].balance += getPaid();
     netWorthBalance = calculateNetWorth();
     displayBalances();
-    tickCount++;
     generateBothDropdownOptions();
 }
 
 function isValidTransfer(fromAccount, toAccount, transferAmount) {
-    console.log(`transferAmount:  ${transferAmount}`)
+    console.log(`Transferred ${Helper.formatToCurrency(transferAmount)} from ${fromAccount} to ${toAccount}.`)
     return (
         personalAccounts[fromAccount] && personalAccounts[toAccount]
         && isAsset(fromAccount)
@@ -199,7 +193,7 @@ function transferMoney() {
         return
     }
     personalAccounts[fromSelector.value].balance -= transferAmount;
-    if (personalAccounts[toSelector.value].type == "liability") {
+    if (!isAsset(toSelector.value)) {
         personalAccounts[toSelector.value].balance -= transferAmount;
         console.log("paying off debt")
     } else {
@@ -219,7 +213,9 @@ displayBalances();
 generateDropdownOptions(fromSelector)
 generateDropdownOptions(toSelector)
 
-let testButton = document.createElement("button");
-testButton.textContent = "tick()";
-document.querySelector("main").appendChild(testButton);
-testButton.addEventListener("click", tick);
+if (isTesting) {
+    let testButton = document.createElement("button");
+    testButton.textContent = "tick()";
+    document.querySelector("main").appendChild(testButton);
+    testButton.addEventListener("click", tick);    
+}
