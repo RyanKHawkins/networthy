@@ -32,8 +32,14 @@ const personalAccounts = {
     "College Loans": {
         display: "College Loans",
         balance: 5000,
-        interest: 0.05,
+        interest: 0.055,
         type: "liability"
+    },
+    "Stocks": {
+        display: "Stocks",
+        balance: 0,
+        interest: 0.8,
+        type: "asset"
     }
 };
 
@@ -79,6 +85,11 @@ function generateDropdownOptions(selector) {
     console.log(fromSelector);
     console.log(personalAccounts[fromSelector.value]);
     console.log(toSelector);
+}
+
+function generateBothDropdownOptions() {
+    generateDropdownOptions(fromSelector);
+    generateDropdownOptions(toSelector);
 }
 
 const possibleDebtAccounts = {
@@ -158,10 +169,11 @@ function tick() {
     let date = new Date();
     let time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     console.log(`${time} - ticked`);
-    personalAccounts["basic-savings"].balance += getPaid();
+    personalAccounts["Savings"].balance += getPaid();
     netWorthBalance = calculateNetWorth();
     displayBalances();
     tickCount++;
+    generateBothDropdownOptions();
 }
 
 function isValidTransfer(fromAccount, toAccount, transferAmount) {
@@ -190,6 +202,7 @@ function transferMoney() {
     }
     amountInput.value = 0;
     displayBalances();
+    generateBothDropdownOptions();
 }
 
 let netWorthBalance = calculateNetWorth();
@@ -200,3 +213,8 @@ displayBalances();
 // }, 5000);
 generateDropdownOptions(fromSelector)
 generateDropdownOptions(toSelector)
+
+let testButton = document.createElement("button");
+testButton.textContent = "tick()";
+document.querySelector("main").appendChild(testButton);
+testButton.addEventListener("click", tick);
