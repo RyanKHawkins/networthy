@@ -137,7 +137,7 @@ function earnInterest(account) {
 }
 
 export function displayBalances() {
-    netWorthSpan.innerText = Helper.formatToCurrency(netWorthBalance);
+    netWorthSpan.innerText = Helper.formatToCurrency(calculateNetWorth());
     accountDisplay.innerHTML = "";
     for (let account in personalAccounts) {
         let p = document.createElement("p");
@@ -165,7 +165,6 @@ export function tick() {
     let time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     console.log(`${time} - ticked ${tickCount++}`);
     getPaid();
-    netWorthBalance = calculateNetWorth();
     displayBalances();
     generateBothDropdownOptions();
 }
@@ -199,7 +198,6 @@ function transferMoney() {
     generateBothDropdownOptions();
 }
 
-let netWorthBalance = calculateNetWorth();
 displayBalances();
 
 // setTimeout(() => {
