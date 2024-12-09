@@ -56,11 +56,6 @@ export function getPaid(pay = STANDARD_PAY) {
     return
 }
 
-function getRandomRange(min, max) {
-    let number = Math.floor(Math.random() * (max - min + 1) + min);
-    return number
-}
-
 function createOptionDisplay(option) {
     return `${option.display}:  ${Helper.formatToCurrency(option.balance)}`
 }
