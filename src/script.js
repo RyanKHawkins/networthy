@@ -17,7 +17,7 @@ window.addEventListener("keyup", (e) => {
     }
 })
 
-const personalAccounts = {
+export const personalAccounts = {
     "Savings": {
         display: "Savings",
         balance: 100,
@@ -136,7 +136,7 @@ function earnInterest(account) {
     );
 }
 
-function displayBalances() {
+export function displayBalances() {
     netWorthSpan.innerText = Helper.formatToCurrency(netWorthBalance);
     accountDisplay.innerHTML = "";
     for (let account in personalAccounts) {
