@@ -1,10 +1,11 @@
 import * as Script from "./script.js";
 
-const isTesting = true;
+const isTesting = false;
 
 if (isTesting) {
     addTestButtonForFunction(Script.tick, "tick");
     addTestButtonForFunction(Script.getPaid, "getPaid");
+    addTestButtonForFunction(changeAccountBalance, "Change Account Balance")
 }
 
 function addTestButtonForFunction(func, display) {
@@ -14,3 +15,9 @@ function addTestButtonForFunction(func, display) {
     testButton.addEventListener("click", func);
 }
 
+function changeAccountBalance() {
+    let account = window.prompt("What account?")
+    let newBalance = window.prompt("What balance?")
+    Script.personalAccounts[account].balance = Number(newBalance);
+    Script.displayBalances()
+}
