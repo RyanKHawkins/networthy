@@ -1,7 +1,5 @@
 import * as Helper from "./helper.js"
 
-const isTesting = true;
-
 const netWorthSpan = document.querySelector("#networth-balance");
 const accountDisplay = document.querySelector("#account-display");
 const TICK_INTERVAL = 1000;
@@ -52,7 +50,7 @@ function isAsset(account) {
     return personalAccounts[account].type == "asset";
 }
 
-function getPaid() {
+export function getPaid() {
     return 1000;
 }
 
