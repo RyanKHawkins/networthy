@@ -158,7 +158,7 @@ function displayBalances() {
 }
 
 let tickCount = 0;
-function tick() {
+export function tick() {
     let accountsArray = [];
     for (let key of Object.keys(personalAccounts)) {
         accountsArray.push(key);
@@ -212,10 +212,3 @@ displayBalances();
 // }, 5000);
 generateDropdownOptions(fromSelector)
 generateDropdownOptions(toSelector)
-
-if (isTesting) {
-    let testButton = document.createElement("button");
-    testButton.textContent = "tick()";
-    document.querySelector("main").appendChild(testButton);
-    testButton.addEventListener("click", tick);    
-}
