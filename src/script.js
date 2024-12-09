@@ -3,7 +3,7 @@ import * as Helper from "./helper.js"
 const netWorthSpan = document.querySelector("#networth-balance");
 const accountDisplay = document.querySelector("#account-display");
 const TICK_INTERVAL = 1000;
-const PAY_RAISE = 1000;
+const STANDARD_PAY = 1000;
 const transferButton = document.querySelector("#transfer-button");
 const fromSelector = document.querySelector("#from-selector");
 const toSelector = document.querySelector("#to-selector");
@@ -51,8 +51,8 @@ function isAsset(account) {
     return personalAccounts[account].type == "asset";
 }
 
-export function getPaid(raise) {
-    personalAccounts["Savings"].balance += raise;
+export function getPaid(pay = STANDARD_PAY) {
+    personalAccounts["Savings"].balance += pay;
     return
 }
 
@@ -169,7 +169,7 @@ export function tick() {
     let date = new Date();
     let time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     console.log(`${time} - ticked ${tickCount++}`);
-    getPaid(PAY_RAISE);
+    getPaid();
     netWorthBalance = calculateNetWorth();
     displayBalances();
     generateBothDropdownOptions();
