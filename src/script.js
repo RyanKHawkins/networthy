@@ -44,8 +44,7 @@ export const personalAccounts = {
     }
 };
 
-fromSelector.addEventListener("change", generateDropdownOptions(toSelector));
-toSelector.addEventListener("change", generateDropdownOptions(toSelector));
+fromSelector.addEventListener("change", () => generateDropdownOptions(toSelector));
 
 function isAsset(account) {
     return personalAccounts[account].type == "asset";
