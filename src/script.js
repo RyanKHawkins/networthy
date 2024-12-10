@@ -186,9 +186,10 @@ function transferMoney() {
         return
     }
     if (!isAsset(toSelector.value)) {
-        transferAmount = transferAmount > personalAccounts[toSelector.value].balance ? personalAccounts[toSelector.value].balance : transferAmount;
+        transferAmount = transferAmount > personalAccounts[toSelector.value].balance 
+            ? personalAccounts[toSelector.value].balance 
+            : transferAmount;
         personalAccounts[toSelector.value].balance -= transferAmount;
-        console.log("paying off debt")
     } else {
         personalAccounts[toSelector.value].balance += transferAmount;
     }
