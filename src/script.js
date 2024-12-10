@@ -96,7 +96,7 @@ const possibleDebtAccounts = {
     "Medical Bill": {
         display: "Medical Bill",
         balance: Helper.getRandomRange(250, 3000),
-        interest: 1,
+        interest: 0.05,
         type: "liability"
     },
     "Car Loan": {
@@ -140,7 +140,11 @@ function addRandomLiability() {
         return
     }
     let randomDebt = debtArray[Math.floor(Math.random() * debtArray.length)];
-    personalAccounts[randomDebt] = possibleDebtAccounts[randomDebt]
+    console.log(randomDebt)
+    const newDebtObj = {...possibleDebtAccounts[randomDebt]}
+    
+    console.log("newDebtObj: ", newDebtObj)
+    personalAccounts[randomDebt] = newDebtObj
     console.log(accountArray);
     console.log(debtArray);
 }
