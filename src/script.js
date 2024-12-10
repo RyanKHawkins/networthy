@@ -144,7 +144,6 @@ export function addRandomLiability() {
     personalAccounts[randomDebt] = possibleDebtAccounts[randomDebt]();
     displayBalances();
 }
-addRandomLiability()
 
 function calculateNetWorth() {
     let balance = 0;
@@ -162,7 +161,9 @@ function earnInterest(account) {
 }
 
 export function displayBalances() {
-    netWorthSpan.innerText = Helper.formatToCurrency(calculateNetWorth());
+    const netWorth = calculateNetWorth();
+    netWorthSpan.innerText = Helper.formatToCurrency(netWorth);
+    netWorthSpan.style.color = netWorth <= 0 ? "darkred" : "black"
     accountDisplay.innerHTML = "";
     for (let account in personalAccounts) {
         let p = document.createElement("p");
@@ -191,7 +192,7 @@ export function tick() {
     let time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     console.log(`${time} - ticked ${tickCount++}`);
     getPaid();
-    if (Math.floor(Math.random() * 10) < 3) {
+    if (Math.floor(Math.random() * 10) < 1) {
         addRandomLiability();
     }
     if (prevNetWorth < 1_000_000 && calculateNetWorth() >= 1_000_000) {
