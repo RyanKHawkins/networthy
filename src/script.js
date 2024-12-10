@@ -39,7 +39,7 @@ export const personalAccounts = {
     "Stocks": {
         display: "Stocks",
         balance: 0,
-        interest: 0.8,
+        interest: 0.08,
         type: "asset"
     }
 };
@@ -87,45 +87,45 @@ function generateBothDropdownOptions() {
 }
 
 const possibleDebtAccounts = {
-    "College Loan": {
+    "College Loan": () => ({
         display: "College Loan",
-        balance: 5000,
+        balance: Math.ceil(Helper.getRandomRange(5000, 2500) / 100) * 100,
         interest: 0.055,
         type: "liability"
-    },
-    "Medical Bill": {
+    }),
+    "Medical Bill": () => ({
         display: "Medical Bill",
         balance: Helper.getRandomRange(250, 3000),
         interest: 0.05,
         type: "liability"
-    },
-    "Car Loan": {
+    }),
+    "Car Loan": () => ({
         display: "Car Loan",
-        balance: Math.ceil(Helper.getRandomRange(5000, 15000)/100) * 100,
+        balance: Math.ceil(Helper.getRandomRange(5000, 15000) / 100) * 100,
         interest: 0.0725,
         type: "liability"
-    },
-    "Mortgage": {
+    }),
+    "Mortgage": () => ({
         display: "Mortgage",
         balance: Math.ceil(Helper.getRandomRange(75000, 150000) / 100) * 100,
         interest: 0.07,
         type: "liability"
-    },
-    "Credit Card": {
+    }),
+    "Credit Card": () => ({
         display: "Credit Card",
         balance: Helper.getRandomRange(75, 1500),
         interest: 0.25,
         type: "liability"
-    },
-    "Ticket": {
+    }),
+    "Ticket": () => ({
         display: "Ticket",
         balance: Math.round(Helper.getRandomRange(50, 250) / 10) * 10,
         interest: 0,
         type: "liability"
-    }
+    }),
 };
 
-function addRandomLiability() {
+export function addRandomLiability() {
     const accountArray = [];
     for (let key of Object.keys(personalAccounts)) {
         accountArray.push(key);
@@ -137,16 +137,12 @@ function addRandomLiability() {
         }
     }
     if (!debtArray.length) {
+        console.warn("no more liabilities available")
         return
     }
-    let randomDebt = debtArray[Math.floor(Math.random() * debtArray.length)];
-    console.log(randomDebt)
-    const newDebtObj = {...possibleDebtAccounts[randomDebt]}
-    
-    console.log("newDebtObj: ", newDebtObj)
-    personalAccounts[randomDebt] = newDebtObj
-    console.log(accountArray);
-    console.log(debtArray);
+    const randomDebt = debtArray[Math.floor(Math.random() * debtArray.length)];    
+    personalAccounts[randomDebt] = possibleDebtAccounts[randomDebt]();
+    displayBalances();
 }
 addRandomLiability()
 
@@ -154,7 +150,6 @@ function calculateNetWorth() {
     let balance = 0;
     for (let [key, value] of Object.entries(personalAccounts)) {
         balance += isAsset(key) ? value.balance : -value.balance;
-        console.log({key, value})
     }
     return balance;
 }
