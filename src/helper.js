@@ -31,4 +31,8 @@ export function getRandomRange(min, max) {
     return number
 }
 
+export function announce(message) {
+    window.alert(message);
+} 
+
 // export {convertPercentageToDecimal, convertDecimalToPercentage};
