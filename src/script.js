@@ -195,8 +195,18 @@ function transferMoney() {
     }
     personalAccounts[fromSelector.value].balance -= transferAmount;
     amountInput.value = 0;
+    removePaidOffAccounts();
     displayBalances();
     generateBothDropdownOptions();
+}
+
+function removePaidOffAccounts() {
+    for (let account in personalAccounts) {
+        if (personalAccounts[account].type == "liability" && personalAccounts[account].balance <= 0) {
+            delete personalAccounts[account]
+            Helper.announce(`Congratulations for paying off ${account}!`)
+        }
+    }
 }
 
 displayBalances();
