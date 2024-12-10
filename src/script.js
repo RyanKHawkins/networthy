@@ -185,13 +185,14 @@ function transferMoney() {
         amountInput.value = 0
         return
     }
-    personalAccounts[fromSelector.value].balance -= transferAmount;
     if (!isAsset(toSelector.value)) {
+        transferAmount = transferAmount > personalAccounts[toSelector.value].balance ? personalAccounts[toSelector.value].balance : transferAmount;
         personalAccounts[toSelector.value].balance -= transferAmount;
         console.log("paying off debt")
     } else {
         personalAccounts[toSelector.value].balance += transferAmount;
     }
+    personalAccounts[fromSelector.value].balance -= transferAmount;
     amountInput.value = 0;
     displayBalances();
     generateBothDropdownOptions();
