@@ -20,18 +20,18 @@ window.addEventListener("keyup", (e) => {
 export const personalAccounts = {
     "Savings": {
         display: "Savings",
-        balance: 100,
+        balance: 200,
         interest: 0.0012,
         type: "asset"
     },
     "High-Yield Savings": {
         display: "High-Yield Savings",
-        balance: 5,
+        balance: 25,
         interest: 0.041,
         type: "asset"
     },
-    "College Loans": {
-        display: "College Loans",
+    "College Loan": {
+        display: "College Loan",
         balance: 5000,
         interest: 0.055,
         type: "liability"
@@ -87,37 +87,64 @@ function generateBothDropdownOptions() {
 }
 
 const possibleDebtAccounts = {
-    "college-loans": {
-        display: "College Loans",
+    "College Loan": {
+        display: "College Loan",
         balance: 5000,
-        interest: 1,
+        interest: 0.055,
         type: "liability"
     },
-    "medical-bill": {
+    "Medical Bill": {
         display: "Medical Bill",
-        balance: 5000,
+        balance: Helper.getRandomRange(250, 3000),
         interest: 1,
         type: "liability"
     },
-    "car-loan": {
+    "Car Loan": {
         display: "Car Loan",
-        balance: 15000,
+        balance: Math.ceil(Helper.getRandomRange(5000, 15000)/100) * 100,
         interest: 0.0725,
         type: "liability"
     },
-    "mortgage": {
+    "Mortgage": {
         display: "Mortgage",
-        balance: 125000,
+        balance: Math.ceil(Helper.getRandomRange(75000, 150000) / 100) * 100,
         interest: 0.07,
         type: "liability"
     },
-    "credit-card": {
+    "Credit Card": {
         display: "Credit Card",
-        balance: 2500,
+        balance: Helper.getRandomRange(75, 1500),
         interest: 0.25,
+        type: "liability"
+    },
+    "Ticket": {
+        display: "Ticket",
+        balance: Math.round(Helper.getRandomRange(50, 250) / 10) * 10,
+        interest: 0,
         type: "liability"
     }
 };
+
+function addRandomLiability() {
+    const accountArray = [];
+    for (let key of Object.keys(personalAccounts)) {
+        accountArray.push(key);
+    }
+    const debtArray = [];
+    for (let key of Object.keys(possibleDebtAccounts)) {
+        if (!accountArray.includes(key)) {
+            debtArray.push(key);            
+        }
+    }
+    if (!debtArray.length) {
+        return
+    }
+    let randomDebt = debtArray[Math.floor(Math.random() * debtArray.length)];
+    personalAccounts[randomDebt] = possibleDebtAccounts[randomDebt]
+    console.log(accountArray);
+    console.log(debtArray);
+}
+addRandomLiability()
 
 function calculateNetWorth() {
     let balance = 0;
@@ -154,6 +181,7 @@ export function displayBalances() {
 let tickCount = 0;
 export function tick() {
     let accountsArray = [];
+    let prevNetWorth = calculateNetWorth();
     for (let key of Object.keys(personalAccounts)) {
         accountsArray.push(key);
     }
@@ -164,6 +192,12 @@ export function tick() {
     let time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     console.log(`${time} - ticked ${tickCount++}`);
     getPaid();
+    if (Math.floor(Math.random() * 10) < 3) {
+        addRandomLiability();
+    }
+    if (prevNetWorth < 1_000_000 && calculateNetWorth() >= 1_000_000) {
+        Helper.announce("Congratulations on becoming a Net Worth Millionaire!!")
+    }
     displayBalances();
     generateBothDropdownOptions();
 }
