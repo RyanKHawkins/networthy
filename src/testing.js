@@ -4,13 +4,14 @@ const isTesting = false;
 
 if (isTesting) {
     addTestButtonForFunction(Script.tick, "tick");
-    addTestButtonForFunction(Script.getPaid, "getPaid");
     addTestButtonForFunction(changeAccountBalance, "Change Account Balance")
+    addTestButtonForFunction(Script.addRandomLiability, "Add Liability")
 }
 
 function addTestButtonForFunction(func, display) {
     let testButton = document.createElement("button");
-    testButton.textContent = `${display}()`;
+    testButton.style.padding = "0 10px";
+    testButton.textContent = `${display}`;
     document.querySelector("main").appendChild(testButton);
     testButton.addEventListener("click", func);
 }
